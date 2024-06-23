@@ -1,0 +1,171 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - generate_study_timetable
+  - provide_class_schedule
+  - upload_class_schedule
+  - provide_study_preferences
+  - provide_course_difficulty_rankings
+  - get_study_tips
+  - ask_vark
+  - provide_vark_results
+  - email
+  - ask_contact_info
+  - directions
+ 
+    
+entities:
+  - vark_preference
+  - vark_results
+  - issue
+  - info_type
+  - location
+  - origin
+  - destination
+  - issue_type
+  - class_schedule
+
+slots:
+  timetable_text:
+    type: text
+    mappings: 
+    - type: from_text
+  timetable_image_path:
+    type: text
+    mappings:
+    - type: from_text
+  class_schedule:
+    type: text
+    mappings:
+      - type: from_text
+  study_preferences:
+    type: text
+    mappings:
+      - type: from_text
+  course_difficulty_rankings:
+    type: text
+    mappings: 
+      - type: from_text
+  vark_results:
+    type: list
+    influence_conversation: false
+    mappings:
+      - type: from_text
+  vark_preference:
+    type: text
+    mappings:
+      - type: from_text
+  issue:
+    type: text
+    mappings:
+      - type: from_text
+  info_type:
+    type: text
+    mappings:
+      - type: from_text
+  origin:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: location
+        role: origin
+      - type: from_text
+        not_intent: directions
+  destination:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: location
+        role: destination
+      - type: from_text
+        not_intent: directions
+  
+templates:
+  utter_ask_info_type:
+    - text: "Would you like the email address, location, or both?"
+
+responses:
+  utter_greet:
+  - text: "Hey! How are you?"
+  - text: "Hello! How can I assist you today?"
+
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://www.google.com/imgres?q=God%20loves%20you%20photo&imgurl=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Fgod-loves-you-symbol-concept-words-god-loves-you-wooden-blocks-beautiful-orange-background-prayer-hand-copy-space-religion-212445973.jpg&imgrefurl=https%3A%2F%2Fwww.dreamstime.com%2Fphotos-images%2Fgod-loves-you.html&docid=bq0P-t41ZNrauM&tbnid=Ya8MO7M_YSy-hM&vet=12ahUKEwj79ZftjtGGAxU7UEEAHcEpBtQQM3oECDsQAA..i&w=800&h=511&hcb=2&ved=2ahUKEwj79ZftjtGGAxU7UEEAHcEpBtQQM3oECDsQAA"
+  - text: "You can do this!" 
+    image: " https://www.google.com/imgres?q=You%20can%20do%20this&imgurl=https%3A%2F%2Fimg.pixers.pics%2Fpho_wat(s3%3A700%2FFO%2F82%2F57%2F55%2F49%2F700_FO82575549_1ef4b715eadc3a0ace4cf5daafe45f2a.jpg%2C700%2C700%2Ccms%3A2018%2F10%2F5bd1b6b8d04b8_220x50-watermark.png%2Cover%2C480%2C650%2Cjpg)%2Fposters-believe-in-yourself-you-can-do-it.jpg.jpg&imgrefurl=https%3A%2F%2Fpixers.co.nz%2Fposters%2Fbelieve-in-yourself-you-can-do-it-82575549&docid=eqbKv92zQs8uZM&tbnid=EmelVthCGMx2vM&vet=12ahUKEwjqj8-ljtGGAxX0XEEAHUB2BfQQM3oECDYQAA..i&w=700&h=700&hcb=2&ved=2ahUKEwjqj8-ljtGGAxX0XEEAHUB2BfQQM3oECDYQAA"
+  
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, carry on!"
+
+  utter_goodbye:
+  - text: "Bye"
+  - text: "Here is the contact information."
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+
+
+
+  utter_generate_study_timetable:
+  - text: "I can help you create a study timetable. Please provide your class schedule."
+  - text: "Here is your study timetable: [insert timetable here]"
+  utter_ask_vark:
+  - text: "To determine your learning style, please complete the VARK questionnaire by following this link: https://vark-learn.com/the-vark-questionnaire/. After you finish, please come back and enter your results as follows: V for Visual, A for Aural, R for Read/Write, and K for Kinesthetic."
+  
+
+  utter_confirm_ask_vark:
+  - text: "Have you filled the Vark questionnaire? If not fill the questionnaire through the link : https://vark-learn.com/the-vark-questionnaire/. After you finish, please come back and enter your results."
+
+
+  utter_enter_results:
+  - text: "Please enter your VARK results as follows: V for Visual, A for Aural, R for Read/Write, and K for Kinesthetic. Separate each letter with a comma (e.g., V,A,R,K)."
+
+  utter_sorry_could_not_find_directions:
+    - text: "Sorry, I could not find directions for that route."
+
+  utter_error_fetching_directions:
+    - text: "Sorry, there was an error fetching directions. Please try again later."
+  utter_ask_origin:
+    - text: "Where are you starting from?"
+
+  utter_ask_destination:
+    - text: "Where are you going to?"
+
+  utter_ask_class_schedule:
+    - text: "Please provide your class schedule or upload an image of your timetable."
+
+
+actions:
+  - action_capture_vark_results
+  - action_provide_contact_info
+  - action_get_study_tips
+  - action_get_directions
+  - action_provide_directions
+  - action_set_vark_results
+  - action_provide_study_tips
+  - utter_ask_directions
+  - utter_ask_class_schedule
+  - action_generate_timetable
+  - action_ocr_from_image
+  - action_get_study_preferences
+  - action_get_course_difficulty_rankings
+  - action_extract_text_from_image
+  - action_check_origin_and_destination
+  - action_directions
+  - action_ask_origin
+  - action_ask_destination
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
